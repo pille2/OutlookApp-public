@@ -2,17 +2,15 @@ body {
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
     padding: 20px;
-    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    background: #f5f5f5;
     min-height: 100vh;
 }
 
 .container {
     max-width: 400px;
     margin: 0 auto;
-    background: white;
-    border-radius: 12px;
+    background: transparent;
     padding: 30px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     position: relative;
 }
 
@@ -29,12 +27,12 @@ body {
 }
 
 .email-info {
-    background: #f8f9fa;
+    background: white;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 0px;
     margin-bottom: 20px;
     font-size: 12px;
-    border-left: 4px solid #2196f3;
+    border: 1px solid #e0e0e0;
 }
 
 .email-info strong {
@@ -49,13 +47,14 @@ body {
 textarea {
     width: 100%;
     padding: 10px 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 0px;
     font-size: 12px;
     box-sizing: border-box;
     font-family: inherit;
     resize: vertical;
     min-height: 60px;
+    background: white;
 }
 
 textarea:focus {
@@ -64,74 +63,38 @@ textarea:focus {
     box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
-.rating-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.checkbox-group {
     margin-bottom: 20px;
 }
 
-.rating-btn {
-    width: 100%;
-    padding: 10px 12px;
-    border: 2px solid #e0e0e0;
-    background: white;
-    border-radius: 6px;
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
     cursor: pointer;
     font-size: 12px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.rating-btn:hover {
-    border-color: #2196f3;
-    background: #f3f9ff;
+.checkbox-item:last-child {
+    border-bottom: none;
 }
 
-.rating-btn.selected {
-    border-color: #2196f3;
-    background: #2196f3;
-    color: white;
+.checkbox-item input[type="checkbox"] {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }
 
-.rating-btn.qualified {
-    background: #e8f5e8;
-    border-color: #4caf50;
-    color: #2e7d32;
+.checkbox-label {
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
 }
 
-.rating-btn.qualified.selected {
-    background: #4caf50;
-    border-color: #4caf50;
-    color: white;
-}
-
-.rating-btn.disqualified {
-    background: #ffebee;
-    border-color: #f44336;
-    color: #c62828;
-}
-
-.rating-btn.disqualified.selected {
-    background: #f44336;
-    border-color: #f44336;
-    color: white;
-}
-
-.rating-btn.offtopic {
-    background: #fff3e0;
-    border-color: #ff9800;
-    color: #e65100;
-}
-
-.rating-btn.offtopic.selected {
-    background: #ff9800;
-    border-color: #ff9800;
-    color: white;
+.checkbox-item:hover .checkbox-label {
+    color: #2196f3;
 }
 
 .action-buttons {
@@ -140,8 +103,8 @@ textarea:focus {
 
 .send-history {
     margin-bottom: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    background: white;
+    border-radius: 0px;
     padding: 15px;
     border: 1px solid #e0e0e0;
 }
@@ -213,17 +176,17 @@ textarea:focus {
     width: 100%;
     padding: 14px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 0px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    background: #9c27b0;
+    background: #7B3FD8;
     color: white;
 }
 
 .btn:hover {
-    background: #7b1fa2;
+    background: #6A35C2;
     transform: translateY(-1px);
 }
 
@@ -288,9 +251,9 @@ textarea:focus {
 }
 
 .email-body-preview {
-    background: #f5f5f5;
+    background: white;
     padding: 10px;
-    border-radius: 6px;
+    border-radius: 0px;
     margin-top: 10px;
     font-size: 12px;
     max-height: 80px;
@@ -303,9 +266,9 @@ textarea:focus {
 /* Debug Panel Styles */
 .debug-panel {
     margin-top: 20px;
-    border: 2px solid #ff9800;
-    border-radius: 8px;
-    background: #fff3e0;
+    border: 1px solid #e0e0e0;
+    border-radius: 0px;
+    background: white;
 }
 
 .debug-header {
@@ -313,9 +276,9 @@ textarea:focus {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    background: #ff9800;
+    background: #666;
     color: white;
-    border-radius: 6px 6px 0 0;
+    border-radius: 0px;
 }
 
 .debug-header h4 {
@@ -347,7 +310,7 @@ textarea:focus {
     margin-bottom: 15px;
     padding: 10px;
     background: white;
-    border-radius: 6px;
+    border-radius: 0px;
     border: 1px solid #e0e0e0;
 }
 

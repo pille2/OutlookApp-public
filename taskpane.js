@@ -25,15 +25,20 @@ async function initializeApp() {
     // Debug Panel Setup
     setupDebugPanel();
     
-    // Event Listener für Rating Buttons
-    document.querySelectorAll('.rating-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            selectRating(this.dataset.rating);
+    // Event Listener für Checkboxen
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateCheckboxRatings();
         });
     });
     
     // Event Listener für Action Buttons
     document.getElementById('sendBtn').addEventListener('click', sendToCRM);
+    
+    // Event Listener für Version Info (Debug Panel öffnen)
+    document.getElementById('versionInfo').addEventListener('click', function() {
+        toggleDebugPanel();
+    });
     
     // Lade E-Mail Informationen
     await loadEmailInfo();
@@ -166,25 +171,21 @@ function getImportanceText(importance) {
     }
 }
 
-function selectRating(rating) {
-    console.log("Rating ausgewählt:", rating);
+function updateCheckboxRatings() {
+    console.log("Checkbox-Status aktualisiert");
     
-    // Alle Rating Buttons deselektieren
-    document.querySelectorAll('.rating-btn').forEach(btn => {
-        btn.classList.remove('selected');
+    // Alle ausgewählten Checkboxen sammeln
+    const selectedRatings = [];
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+        selectedRatings.push(checkbox.dataset.rating);
     });
     
-    // Gewählten Button selektieren
-    const selectedBtn = document.querySelector(`[data-rating="${rating}"]`);
-    if (selectedBtn) {
-        selectedBtn.classList.add('selected');
-        console.log("Button selektiert:", selectedBtn);
-    }
+    console.log("Ausgewählte Ratings:", selectedRatings);
     
-    // Rating in emailData speichern
+    // Ratings in emailData speichern
     if (emailData) {
-        emailData.rating = rating;
-        console.log("Rating gespeichert:", emailData.rating);
+        emailData.ratings = selectedRatings;
+        console.log("Ratings gespeichert:", emailData.ratings);
     }
 }
 
@@ -194,8 +195,22 @@ function loadSavedEmailData(emailId) {
         const data = JSON.parse(savedData);
         document.getElementById('comment').value = data.comment || '';
         
+        // Checkboxen basierend auf gespeicherten Ratings setzen
+        if (data.ratings && Array.isArray(data.ratings)) {
+            data.ratings.forEach(rating => {
+                const checkbox = document.querySelector(`input[data-rating="${rating}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            });
+        }
+        
+        // Legacy Support für einzelne Rating
         if (data.rating) {
-            selectRating(data.rating);
+            const checkbox = document.querySelector(`input[data-rating="${data.rating}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
         }
     }
 }
@@ -206,8 +221,8 @@ async function sendToCRM() {
         return;
     }
     
-    if (!emailData.rating) {
-        showStatus("Bitte eine Bewertung auswählen", "error");
+    if (!emailData.ratings || emailData.ratings.length === 0) {
+        showStatus("Bitte mindestens eine Bewertung auswählen", "error");
         return;
     }
     
@@ -223,7 +238,7 @@ async function sendToCRM() {
                 sender_email: emailData.sender,
                 sender_name: emailData.senderName,
                 received_time: emailData.receivedTime,
-                rating: emailData.rating,
+                ratings: emailData.ratings,
                 comment: document.getElementById('comment').value,
                 processed_at: new Date().toISOString(),
                 source: "Outlook Add-in CRM Manager"
@@ -247,7 +262,7 @@ async function sendToCRM() {
                 emailId: emailData.id,
                 subject: emailData.subject,
                 sender: emailData.sender,
-                rating: emailData.rating,
+                ratings: emailData.ratings,
                 comment: document.getElementById('comment').value,
                 processedAt: new Date().toISOString(),
                 sentToCRM: true
@@ -271,9 +286,9 @@ async function sendToCRM() {
             // Textfeld zurücksetzen
             document.getElementById('comment').value = '';
             
-            // Rating zurücksetzen
-            document.querySelectorAll('.rating-btn').forEach(btn => {
-                btn.classList.remove('selected');
+            // Checkboxen zurücksetzen
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
             });
             
             // Send-Historie aktualisieren
@@ -336,32 +351,40 @@ function setupDebugPanel() {
     const debugPanel = document.getElementById('debugPanel');
     
     toggleBtn.addEventListener('click', function() {
-        if (debugPanel.style.display === 'none') {
-            debugPanel.style.display = 'block';
-            debugContent.style.display = 'block';
-            toggleBtn.textContent = 'Ausblenden';
-            updateDebugInfo();
-        } else {
-            debugPanel.style.display = 'none';
-            debugContent.style.display = 'none';
-            toggleBtn.textContent = 'Einblenden';
-        }
+        toggleDebugPanel();
     });
-    
-    // Console override für Debug-Logs
-    const originalLog = console.log;
-    const originalError = console.error;
-    
-    console.log = function(...args) {
-        originalLog.apply(console, args);
-        addDebugLog(args.join(' '));
-    };
-    
-    console.error = function(...args) {
-        originalError.apply(console, args);
-        addErrorLog(args.join(' '));
-    };
 }
+
+function toggleDebugPanel() {
+    const toggleBtn = document.getElementById('toggleDebug');
+    const debugContent = document.getElementById('debugContent');
+    const debugPanel = document.getElementById('debugPanel');
+    
+    if (debugPanel.style.display === 'none') {
+        debugPanel.style.display = 'block';
+        debugContent.style.display = 'block';
+        toggleBtn.textContent = 'Ausblenden';
+        updateDebugInfo();
+    } else {
+        debugPanel.style.display = 'none';
+        debugContent.style.display = 'none';
+        toggleBtn.textContent = 'Einblenden';
+    }
+}
+
+// Console override für Debug-Logs
+const originalLog = console.log;
+const originalError = console.error;
+
+console.log = function(...args) {
+    originalLog.apply(console, args);
+    addDebugLog(args.join(' '));
+};
+
+console.error = function(...args) {
+    originalError.apply(console, args);
+    addErrorLog(args.join(' '));
+};
 
 function addDebugLog(message) {
     const timestamp = new Date().toLocaleTimeString();

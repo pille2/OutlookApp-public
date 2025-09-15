@@ -11,7 +11,7 @@
 
 <body>
     <div class="container">
-        <div class="version-info" id="versionInfo">v2.17.3</div>
+        <div class="version-info" id="versionInfo" style="cursor: pointer;">v2.17.3</div>
         
         <div id="emailInfo" class="email-info">
             Lade E-Mail...
@@ -21,10 +21,27 @@
             <textarea id="comment" placeholder="Kommentar..."></textarea>
         </div>
 
-        <div class="rating-buttons">
-            <button class="rating-btn qualified" data-rating="qualified">Qualifiziert</button>
-            <button class="rating-btn disqualified" data-rating="disqualified">Disqualifiziert</button>
-            <button class="rating-btn offtopic" data-rating="offtopic">Offtopic</button>
+        <div class="checkbox-group">
+            <label class="checkbox-item">
+                <input type="checkbox" id="offtopic" data-rating="offtopic">
+                <span class="checkbox-label">Offtopic</span>
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" id="verloren-preis" data-rating="verloren-preis">
+                <span class="checkbox-label">Verloren, Preis</span>
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" id="verloren-zeit" data-rating="verloren-zeit">
+                <span class="checkbox-label">Verloren, Zeit</span>
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" id="passt-nicht" data-rating="passt-nicht">
+                <span class="checkbox-label">Passt nicht, aber vllt zukünftig</span>
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" id="follow-up" data-rating="follow-up">
+                <span class="checkbox-label">Follow up</span>
+            </label>
         </div>
 
         <div class="action-buttons">
