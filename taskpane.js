@@ -35,12 +35,37 @@ async function initializeApp() {
     // Event Listener für Action Buttons
     document.getElementById('sendBtn').addEventListener('click', sendToCRM);
     
+    // Event Listener für Logs Button (kleiner Button)
+    document.getElementById('logsBtn').addEventListener('click', function() {
+        const debugPanel = document.getElementById('debugPanel');
+        if (debugPanel.style.display === 'none') {
+            debugPanel.style.display = 'block';
+            document.getElementById('debugContent').style.display = 'block';
+            updateDebugInfo();
+        } else {
+            debugPanel.style.display = 'none';
+            document.getElementById('debugContent').style.display = 'none';
+        }
+    });
+    
     // Event Listener für Version Info (Cache leeren)
     document.getElementById('versionInfo').addEventListener('click', function() {
         localStorage.clear();
         sessionStorage.clear();
         showStatus("Cache geleert - lade E-Mail neu...", "info");
         loadEmailInfo();
+        
+        // Cache-Busting Parameter aktualisieren und Seite neu laden
+        const currentVersion = this.textContent;
+        const scriptTag = document.querySelector('script[src*="taskpane.js"]');
+        if (scriptTag) {
+            scriptTag.src = scriptTag.src.split('?')[0] + '?v=' + currentVersion + '&t=' + Date.now();
+        }
+        
+        // Seite nach kurzer Verzögerung neu laden
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 1000);
     });
     
     // Lade E-Mail Informationen
