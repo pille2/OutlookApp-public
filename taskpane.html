@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ALL ONE Lead Tracker</title>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="version-info" id="versionInfo" style="cursor: pointer;" title="Klicken zum Cache leeren">v2.12.0</div>
+        
+        <div id="emailInfo" class="email-info">
+            Lade E-Mail...
+        </div>
+
+        <div class="form-group">
+            <textarea id="comment" placeholder="Kommentar..."></textarea>
+        </div>
+
+        <div class="rating-buttons">
+            <button class="rating-btn qualified" data-rating="qualified">Qualifiziert</button>
+            <button class="rating-btn disqualified" data-rating="disqualified">Disqualifiziert</button>
+            <button class="rating-btn offtopic" data-rating="offtopic">Offtopic</button>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="sendBtn">An CRM senden</button>
+        </div>
+
+        <div class="send-history">
+            <h4>Send-Historie</h4>
+            <div id="sendHistoryList" class="history-list">
+                <div class="history-note">Hinweis: Die Send-Historie ist cookie-basiert und daher nur temporär</div>
+            </div>
+        </div>
+
+        <!-- Debug Toggle Section - nur kleiner Logs Button -->
+        <div class="debug-toggle-section">
+            <button id="logsBtn" class="btn-logs">📊</button>
+        </div>
+
+        <div id="status"></div>
+        
+        <!-- Logs Button entfernt -->
+        
+        <!-- Debug Panel -->
+        <div id="debugPanel" class="debug-panel" style="display: none;">
+            <div class="debug-header">
+                <h4>Debug & Logs</h4>
+                <button id="toggleDebug" class="debug-toggle">Einblenden</button>
+            </div>
+            <div id="debugContent" class="debug-content" style="display: none;">
+                <div class="debug-section">
+                    <h5>Office.js Status:</h5>
+                    <div id="officeStatus">Prüfe...</div>
+                </div>
+                <div class="debug-section">
+                    <h5>E-Mail Item:</h5>
+                    <div id="emailItemStatus">Prüfe...</div>
+                </div>
+                <div class="debug-section">
+                    <h5>E-Mail Daten:</h5>
+                    <pre id="emailDataDebug">Wird geladen...</pre>
+                </div>
+                <div class="debug-section">
+                    <h5>Console Logs:</h5>
+                    <div id="consoleLogs"></div>
+                </div>
+                <div class="debug-section">
+                    <h5>Fehler:</h5>
+                    <div id="errorLogs"></div>
+                </div>
+                <div class="debug-section">
+                    <h5>Send-Historie:</h5>
+                    <div id="sendHistory"></div>
+                </div>
+                <div class="debug-section">
+                    <h5>LocalStorage Keys:</h5>
+                    <div id="localStorageKeys"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="taskpane.js?v=2.12.0"></script>
+</body>
+</html>
