@@ -19,7 +19,7 @@ let debugLogs = [];
 let errorLogs = [];
 
 async function initializeApp() {
-    console.log("ALL ONE Lead Tracker v2.17.1 initialisiert");
+    console.log("ALL ONE Lead Tracker v2.17.2 initialisiert");
     addDebugLog("App initialisiert");
     
     // Debug Panel Setup
@@ -34,26 +34,6 @@ async function initializeApp() {
     
     // Event Listener für Action Buttons
     document.getElementById('sendBtn').addEventListener('click', sendToCRM);
-    
-    // Event Listener für Version Info (Cache leeren)
-    document.getElementById('versionInfo').addEventListener('click', function() {
-        localStorage.clear();
-        sessionStorage.clear();
-        showStatus("Cache geleert - lade E-Mail neu...", "info");
-        loadEmailInfo();
-        
-        // Cache-Busting Parameter aktualisieren und Seite neu laden
-        const currentVersion = this.textContent;
-        const scriptTag = document.querySelector('script[src*="taskpane.js"]');
-        if (scriptTag) {
-            scriptTag.src = scriptTag.src.split('?')[0] + '?v=' + currentVersion + '&t=' + Date.now();
-        }
-        
-        // Seite nach kurzer Verzögerung neu laden
-        setTimeout(() => {
-            window.location.reload(true);
-        }, 1000);
-    });
     
     // Lade E-Mail Informationen
     await loadEmailInfo();
