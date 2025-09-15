@@ -19,7 +19,7 @@ let debugLogs = [];
 let errorLogs = [];
 
 async function initializeApp() {
-    console.log("ALL ONE Lead Tracker v2.12.0 initialisiert");
+    console.log("ALL ONE Lead Tracker v2.17.1 initialisiert");
     addDebugLog("App initialisiert");
     
     // Debug Panel Setup
@@ -34,19 +34,6 @@ async function initializeApp() {
     
     // Event Listener für Action Buttons
     document.getElementById('sendBtn').addEventListener('click', sendToCRM);
-    
-    // Event Listener für Logs Button (kleiner Button)
-    document.getElementById('logsBtn').addEventListener('click', function() {
-        const debugPanel = document.getElementById('debugPanel');
-        if (debugPanel.style.display === 'none') {
-            debugPanel.style.display = 'block';
-            document.getElementById('debugContent').style.display = 'block';
-            updateDebugInfo();
-        } else {
-            debugPanel.style.display = 'none';
-            document.getElementById('debugContent').style.display = 'none';
-        }
-    });
     
     // Event Listener für Version Info (Cache leeren)
     document.getElementById('versionInfo').addEventListener('click', function() {
