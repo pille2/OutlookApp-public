@@ -19,7 +19,7 @@ let debugLogs = [];
 let errorLogs = [];
 
 async function initializeApp() {
-    console.log("ALL ONE Lead Tracker v2.17.2 initialisiert");
+    console.log("ALL ONE Lead Tracker v2.17.3 initialisiert");
     addDebugLog("App initialisiert");
     
     // Debug Panel Setup
