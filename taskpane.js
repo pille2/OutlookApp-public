@@ -325,14 +325,24 @@ function truncateText(text, maxLength = 100) {
 
 function loadSendHistory() {
     const sendHistoryList = document.getElementById('sendHistoryList');
-    const sendHistory = JSON.parse(localStorage.getItem('sendHistory') || '[]');
     
-    if (sendHistory.length > 0) {
-        const historyHtml = sendHistory.slice(0, 10).map(entry => {
+    if (!emailData || !emailData.id) {
+        sendHistoryList.innerHTML = '<div class="history-note">Keine E-Mail-ID verfügbar</div>';
+        return;
+    }
+    
+    // Nur Historie für die aktuelle E-Mail laden
+    const allHistory = JSON.parse(localStorage.getItem('sendHistory') || '[]');
+    const emailSpecificHistory = allHistory.filter(entry => entry.emailId === emailData.id);
+    
+    if (emailSpecificHistory.length > 0) {
+        const historyHtml = emailSpecificHistory.map(entry => {
             const date = new Date(entry.processedAt).toLocaleString('de-DE');
+            const ratingsText = Array.isArray(entry.ratings) ? entry.ratings.join(', ') : (entry.rating || 'Keine Bewertung');
             return `
                 <div class="history-item">
                     <div class="history-date">${date}</div>
+                    <div class="history-comment"><strong>Bewertung:</strong> ${ratingsText}</div>
                     <div class="history-comment">${entry.comment || 'Kein Kommentar'}</div>
                 </div>
             `;
@@ -340,7 +350,7 @@ function loadSendHistory() {
         
         sendHistoryList.innerHTML = historyHtml;
     } else {
-        sendHistoryList.innerHTML = '<div class="history-note">Hinweis: Die Send-Historie ist cookie-basiert und daher nur temporär</div>';
+        sendHistoryList.innerHTML = '<div class="history-note">Noch keine Sendungen für diese E-Mail</div>';
     }
 }
 
@@ -443,20 +453,27 @@ function updateDebugInfo() {
     const errorLogsDiv = document.getElementById('errorLogs');
     errorLogsDiv.innerHTML = errorLogs.length > 0 ? errorLogs.join('<br>') : 'Keine Fehler';
     
-    // Send History
+    // Send History (E-Mail-spezifisch)
     const sendHistoryDiv = document.getElementById('sendHistory');
-    const sendHistory = JSON.parse(localStorage.getItem('sendHistory') || '[]');
-    if (sendHistory.length > 0) {
-        const historyHtml = sendHistory.slice(0, 10).map(entry => 
-            `<div style="margin-bottom: 5px; font-size: 10px;">
-                <strong>${entry.subject}</strong><br>
-                Von: ${entry.sender}<br>
-                Rating: ${entry.rating} | Zeit: ${new Date(entry.processedAt).toLocaleString('de-DE')}
-            </div>`
-        ).join('');
-        sendHistoryDiv.innerHTML = historyHtml;
+    const allHistory = JSON.parse(localStorage.getItem('sendHistory') || '[]');
+    
+    if (emailData && emailData.id) {
+        const emailSpecificHistory = allHistory.filter(entry => entry.emailId === emailData.id);
+        if (emailSpecificHistory.length > 0) {
+            const historyHtml = emailSpecificHistory.map(entry => {
+                const ratingsText = Array.isArray(entry.ratings) ? entry.ratings.join(', ') : (entry.rating || 'Keine Bewertung');
+                return `<div style="margin-bottom: 5px; font-size: 10px;">
+                    <strong>${entry.subject}</strong><br>
+                    Bewertung: ${ratingsText}<br>
+                    Zeit: ${new Date(entry.processedAt).toLocaleString('de-DE')}
+                </div>`;
+            }).join('');
+            sendHistoryDiv.innerHTML = historyHtml;
+        } else {
+            sendHistoryDiv.innerHTML = 'Noch keine Sendungen für diese E-Mail';
+        }
     } else {
-        sendHistoryDiv.innerHTML = 'Keine gesendeten E-Mails';
+        sendHistoryDiv.innerHTML = 'Keine E-Mail-ID verfügbar';
     }
     
     // LocalStorage Keys
