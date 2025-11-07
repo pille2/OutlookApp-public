@@ -67,6 +67,13 @@ textarea:focus {
     margin-bottom: 20px;
 }
 
+.quick-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
 .checkbox-item {
     display: flex;
     align-items: center;
@@ -183,11 +190,22 @@ textarea:focus {
     transition: all 0.2s ease;
     background: #7B3FD8;
     color: white;
+    display: block;
+    text-align: center;
+    text-decoration: none;
 }
 
 .btn:hover {
     background: #6A35C2;
     transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #2196f3;
+}
+
+.btn-secondary:hover {
+    background: #1976d2;
 }
 
 .btn:active {
